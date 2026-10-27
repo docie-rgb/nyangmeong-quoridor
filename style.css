@@ -1,0 +1,175 @@
+:root {
+  --bg: #fbf3e6;
+  --ink: #4a3426;
+  --muted: #9a8170;
+  --card: #fffaf2;
+  --line: #ead8bf;
+  --wood: #b98457;
+  --wood-dark: #a8774b;
+  --cell: #f8ebd6;
+  --cat: #ee8a36;
+  --cat-soft: #fde1c2;
+  --dog: #8a5634;
+  --dog-soft: #ead2bd;
+  --danger: #e0565b;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+}
+
+.app {
+  display: flex;
+  gap: 32px;
+  align-items: flex-start;
+  padding: 24px;
+}
+
+#board {
+  display: block;
+  width: min(680px, calc(100vh - 48px));
+  height: auto;
+  filter: drop-shadow(0 10px 24px rgba(120, 80, 40, .25));
+}
+
+/* 보드 */
+.board-bg { fill: var(--wood); }
+.cell { fill: var(--cell); }
+.cell.goal-cat { fill: var(--cat-soft); }
+.cell.goal-dog { fill: var(--dog-soft); }
+
+.hint { fill: var(--cat); opacity: .35; pointer-events: none; }
+.hint.hot { opacity: .75; }
+.hint-ring { fill: none; stroke: var(--cat); stroke-width: 3; stroke-dasharray: 6 5; pointer-events: none; }
+
+.wall { pointer-events: none; }
+.wall.cat { fill: #ff7a1f; stroke: #fff1dc; stroke-width: 2; }
+.wall.dog { fill: #4b2a17; stroke: #fff1dc; stroke-width: 2; }
+.wall.new { animation: drop .25s ease-out; }
+.preview { pointer-events: none; }
+.preview.ok { fill: #ff7a1f; opacity: .6; stroke: #fff1dc; stroke-width: 2; stroke-dasharray: 6 4; }
+.preview.bad { fill: var(--danger); opacity: .55; }
+
+.pawn { transition: transform .25s ease; pointer-events: none; }
+
+@keyframes drop {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* 패널 */
+.panel {
+  width: 240px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+h1 {
+  margin: 0 0 4px;
+  font-size: 28px;
+  letter-spacing: -0.5px;
+}
+
+.card {
+  background: var(--card);
+  border: 2px solid var(--line);
+  border-radius: 16px;
+  padding: 14px 16px;
+}
+
+.label {
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+
+.value {
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.face { width: 52px; height: 52px; flex: none; }
+.face.sm { width: 30px; height: 30px; }
+.face.big { width: 120px; height: 120px; }
+
+.turn { display: flex; align-items: center; gap: 12px; }
+.turn.cat { border-color: var(--cat); }
+.turn.dog { border-color: var(--dog); }
+
+.timer .bar {
+  margin-top: 8px;
+  height: 10px;
+  border-radius: 5px;
+  background: var(--line);
+  overflow: hidden;
+}
+#timerBar {
+  height: 100%;
+  width: 100%;
+  background: var(--cat);
+  border-radius: 5px;
+}
+.timer.urgent #timerText { color: var(--danger); }
+.timer.urgent #timerBar { background: var(--danger); }
+.timer.paused #timerBar { background: var(--muted); }
+.timer.paused .value { color: var(--muted); font-size: 17px; }
+
+.wall-row { display: flex; align-items: center; gap: 10px; margin-top: 8px; }
+.pips { display: flex; gap: 3px; flex: 1; }
+.pips span { width: 9px; height: 18px; border-radius: 3px; }
+.wall-row.cat .pips span { background: var(--cat); }
+.wall-row.dog .pips span { background: var(--dog); }
+.pips span.used { background: var(--line) !important; }
+.count { font-weight: 700; width: 22px; text-align: right; }
+
+.btn {
+  font: inherit;
+  font-size: 16px;
+  font-weight: 700;
+  padding: 12px 18px;
+  border: none;
+  border-radius: 14px;
+  background: var(--ink);
+  color: #fff;
+  cursor: pointer;
+  transition: transform .1s, background .15s;
+}
+.btn:hover { background: #2f2018; }
+.btn:active { transform: scale(.97); }
+
+/* 승패 화면 */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(60, 40, 25, .45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.overlay.hidden { display: none; }
+.modal {
+  background: var(--card);
+  border-radius: 24px;
+  padding: 32px 48px;
+  text-align: center;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, .25);
+  animation: pop .3s ease-out;
+}
+.modal h2 { margin: 12px 0 6px; font-size: 30px; }
+.modal p { margin: 0 0 22px; color: var(--muted); }
+
+@keyframes pop {
+  from { transform: scale(.85); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}

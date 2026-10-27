@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>냥멍 쿼리도</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- 고양이·개 얼굴 SVG 심볼 -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <symbol id="face-cat" viewBox="0 0 100 100">
+        <polygon points="14,46 20,6 46,26" fill="#f2a04e" stroke="#b8692a" stroke-width="3" stroke-linejoin="round"/>
+        <polygon points="86,46 80,6 54,26" fill="#f2a04e" stroke="#b8692a" stroke-width="3" stroke-linejoin="round"/>
+        <polygon points="22,36 24,16 38,28" fill="#ffc2c7"/>
+        <polygon points="78,36 76,16 62,28" fill="#ffc2c7"/>
+        <ellipse cx="50" cy="58" rx="40" ry="35" fill="#f6b062" stroke="#b8692a" stroke-width="3"/>
+        <path d="M44 26 L46 36 M50 24 L50 35 M56 26 L54 36" stroke="#d47f33" stroke-width="3.5" stroke-linecap="round"/>
+        <ellipse cx="34" cy="55" rx="6" ry="8" fill="#2d2a32"/>
+        <ellipse cx="66" cy="55" rx="6" ry="8" fill="#2d2a32"/>
+        <circle cx="36" cy="52" r="2.2" fill="#fff"/>
+        <circle cx="68" cy="52" r="2.2" fill="#fff"/>
+        <ellipse cx="24" cy="68" rx="7" ry="4.5" fill="#ff8f9c" opacity=".55"/>
+        <ellipse cx="76" cy="68" rx="7" ry="4.5" fill="#ff8f9c" opacity=".55"/>
+        <path d="M46 64 L54 64 L50 69 Z" fill="#f2737f" stroke="#c4505c" stroke-width="1.5" stroke-linejoin="round"/>
+        <path d="M43 72 Q46.5 77 50 71 Q53.5 77 57 72" fill="none" stroke="#5a3a26" stroke-width="2.5" stroke-linecap="round"/>
+        <path d="M14 62 L32 65 M13 71 L31 70 M86 62 L68 65 M87 71 L69 70" stroke="#5a3a26" stroke-width="1.8" stroke-linecap="round"/>
+      </symbol>
+      <symbol id="face-dog" viewBox="0 0 100 100">
+        <ellipse cx="17" cy="46" rx="12" ry="27" transform="rotate(18 17 46)" fill="#7a4a2c" stroke="#55311c" stroke-width="3"/>
+        <ellipse cx="83" cy="46" rx="12" ry="27" transform="rotate(-18 83 46)" fill="#7a4a2c" stroke="#55311c" stroke-width="3"/>
+        <ellipse cx="50" cy="54" rx="35" ry="36" fill="#d8a46c" stroke="#8f5e36" stroke-width="3"/>
+        <ellipse cx="36" cy="47" rx="11" ry="12" fill="#a8703f"/>
+        <ellipse cx="50" cy="70" rx="20" ry="15" fill="#f8e6cc"/>
+        <ellipse cx="36" cy="48" rx="5.5" ry="7" fill="#2d2a32"/>
+        <ellipse cx="64" cy="48" rx="5.5" ry="7" fill="#2d2a32"/>
+        <circle cx="38" cy="45" r="2" fill="#fff"/>
+        <circle cx="66" cy="45" r="2" fill="#fff"/>
+        <ellipse cx="50" cy="62" rx="8" ry="5.5" fill="#2d2a32"/>
+        <ellipse cx="48" cy="60.5" rx="2.5" ry="1.4" fill="#fff" opacity=".7"/>
+        <path d="M50 67 L50 72 M41 72 Q45.5 77 50 72 Q54.5 77 59 72" fill="none" stroke="#4a2e1c" stroke-width="2.5" stroke-linecap="round"/>
+        <path d="M45 75 Q45 85 50 85 Q55 85 55 75 Z" fill="#f2737f" stroke="#c4505c" stroke-width="1.5"/>
+        <ellipse cx="24" cy="64" rx="6" ry="4" fill="#ff8f9c" opacity=".45"/>
+        <ellipse cx="76" cy="64" rx="6" ry="4" fill="#ff8f9c" opacity=".45"/>
+      </symbol>
+    </defs>
+  </svg>
+
+  <main class="app">
+    <section class="board-wrap">
+      <svg id="board" aria-label="쿼리도 보드"></svg>
+    </section>
+
+    <aside class="panel">
+      <h1>냥멍 쿼리도</h1>
+
+      <div class="card turn" id="turnCard">
+        <svg class="face"><use id="turnFace" href="#face-cat"/></svg>
+        <div>
+          <div class="label">현재 턴</div>
+          <div class="value" id="turnText">내 차례</div>
+        </div>
+      </div>
+
+      <div class="card timer" id="timerCard">
+        <div class="label">남은 시간</div>
+        <div class="value"><span id="timerText">30</span></div>
+        <div class="bar"><div id="timerBar"></div></div>
+      </div>
+
+      <div class="card walls">
+        <div class="label">남은 벽</div>
+        <div class="wall-row cat">
+          <svg class="face sm"><use href="#face-cat"/></svg>
+          <div class="pips" id="pipsCat"></div>
+          <span class="count" id="countCat">10</span>
+        </div>
+        <div class="wall-row dog">
+          <svg class="face sm"><use href="#face-dog"/></svg>
+          <div class="pips" id="pipsDog"></div>
+          <span class="count" id="countDog">10</span>
+        </div>
+      </div>
+
+      <button class="btn" id="restart">다시 시작</button>
+    </aside>
+  </main>
+
+  <div class="overlay hidden" id="result">
+    <div class="modal">
+      <svg class="face big"><use id="resultFace" href="#face-cat"/></svg>
+      <h2 id="resultTitle"></h2>
+      <p id="resultText"></p>
+      <button class="btn" id="again">다시 하기</button>
+    </div>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>
